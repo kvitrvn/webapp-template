@@ -1,21 +1,49 @@
 version: '3'
 
 services:
-###> doctrine/doctrine-bundle ###
-  database:
+
+  db:
     image: postgres:${POSTGRES_VERSION:-13}-alpine
+    restart: unless-stopped
     environment:
-      POSTGRES_DB: ${POSTGRES_DB:-app}
-      # You should definitely change the password in production
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-ChangeMe}
-      POSTGRES_USER: ${POSTGRES_USER:-symfony}
+      POSTGRES_DB: ${POSTGRES_DB:-kvitrvn}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-kvitrvn}
+      POSTGRES_USER: ${POSTGRES_USER:-kvitrvn}
     volumes:
       - db-data:/var/lib/postgresql/data:rw
-      # You may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
-      # - ./docker/db/data:/var/lib/postgresql/data:rw
-###< doctrine/doctrine-bundle ###
+
+  web:
+    image: nginx:alpine
+    restart: unless-stopped
+    ports:
+      - 8000:80
+    volumes:
+      - .:/var/www:delegated
+      - ./tools/docker/nginx/site.conf:/etc/nginx/conf.d/default.conf
+    links:
+      - php
+
+  php:
+    user: '${USER_ID:-1000}:${GROUP_ID:-1000}'
+    restart: unless-stopped
+    image: kvitrvn/php:1.0.0
+    volumes:
+      - .:/var/www:delegated
+    depends_on:
+      - db
+    environment:
+      APP_ENV: dev
+      DATABASE_URL: postgresql://${POSTGRES_PASSWORD:-kvitrvn}:${POSTGRES_PASSWORD:-kvitrvn}@db:5432/${POSTGRES_DB:-kvitrvn}?serverVersion=13&chartset=utf8
+
+  # DEV TOOLS
+  adminer:
+    image: adminer
+    environment:
+      APP_ENV: dev
+      ADMINER_DESIGN: pepa-linha
+      ADMINER_DEFAULT_SERVER: db
+    ports:
+      - 8888:8080
 
 volumes:
-###> doctrine/doctrine-bundle ###
   db-data:
-###< doctrine/doctrine-bundle ###
