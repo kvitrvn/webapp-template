@@ -23,7 +23,7 @@ help: ## Affiche cette aide
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 .PHONY: dev
-dev: vendor/autoload.php ## Lance le serveur de développement
+dev: vendor/autoload.php node_modules/time ## Lance le serveur de développement
 	$(dc) up
 
 .PHONY: lint
@@ -42,6 +42,9 @@ security-check: vendor/autoload.php ## Check pour les vulnérabilités des depen
 php: ## Se connecte au conteneur PHP
 	$(php) /bin/sh
 
+.PHONY: node
+node: ## Se connecte au conteneur NODE
+	$(node) /bin/sh
 # -----------------------------------
 # Dépendances
 # -----------------------------------

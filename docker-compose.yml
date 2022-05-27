@@ -45,5 +45,16 @@ services:
     ports:
       - 8888:8080
 
+  node:
+    user: '${USER_ID:-1000}:${GROUP_ID:-1000}'
+    build:
+      context: ./tools/docker/node
+    command: yarn run watch
+    working_dir: /usr/src/app
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - 3000:3000
+
 volumes:
   db-data:
