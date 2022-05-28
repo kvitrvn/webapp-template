@@ -31,6 +31,10 @@ lint: vendor/autoload.php ## Analyse le code
 	docker run -v $(PWD):/app -w /app -t --rm php:8.1-cli-alpine php -d memory_limit=-1 bin/console lint:container
 	docker run -v $(PWD):/app -w /app -t --rm php:8.1-cli-alpine php -d memory_limit=-1 ./vendor/bin/phpstan analyse
 
+.PHONY: format
+format: ## Formate le code
+	docker run -v $(PWD):/app -w /app -t --rm php:8.1-cli-alpine php -d memory_limit=-1 ./vendor/bin/php-cs-fixer fix
+
 .PHONY: security-check
 security-check: vendor/autoload.php ## Check pour les vulnérabilités des dependencies
 	$(de) php local-php-security-checker --path=/var/www
