@@ -1,4 +1,4 @@
-name: Lints
+name: tests
 on: [ push ]
 jobs:
   lint:
@@ -8,3 +8,10 @@ jobs:
       - uses: actions/checkout@master
       - name: lint
         run: make lint
+  tests:
+    name: Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: tests
+        run: make test
