@@ -1,0 +1,25 @@
+version: '3.3'
+
+services:
+  phptest:
+    image: kvitrvn/php:1.0.0
+    volumes:
+      - .:/var/www:delegated
+    links:
+      - dbtest
+    networks:
+      - test
+
+  dbtest:
+    image: postgres:13
+    environment:
+      POSTGRES_PASSWORD: test
+      POSTGRES_USER: test
+      POSTGRES_DB: test
+    ports:
+      - 5433:5433
+    networks:
+      - test
+
+networks:
+  test:

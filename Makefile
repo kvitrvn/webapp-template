@@ -35,6 +35,11 @@ lint: vendor/autoload.php ## Analyse le code
 security-check: vendor/autoload.php ## Check pour les vulnérabilités des dependencies
 	$(de) php local-php-security-checker --path=/var/www
 
+.PHONY: test
+test: vendor/autoload.php node_modules/time ## Execute les tests
+	$(drtest) phptest bin/console doctrine:schema:validate --skip-sync
+	$(drtest) phptest vendor/bin/phpunit
+
 # -----------------------------------
 # Utilitaires
 # -----------------------------------
