@@ -8,7 +8,6 @@ php :=
 
 ifeq ($(isDocker), 1)
 	dc := USER_ID=$(user) GROUP_ID=$(group) docker-compose
-	dcimport := USER_ID=$(user) GROUP_ID=$(group) docker-compose -f docker-compose.import.yml
 	de := docker-compose exec
 	dr := $(dc) run --rm
 	drtest := $(dc) -f docker-compose.test.yml run --rm

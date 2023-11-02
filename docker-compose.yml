@@ -3,7 +3,7 @@ version: '3'
 services:
 
   db:
-    image: postgres:${POSTGRES_VERSION:-13}-alpine
+    image: postgres:${POSTGRES_VERSION:-15}-alpine
     restart: unless-stopped
     environment:
       POSTGRES_DB: ${POSTGRES_DB:-kvitrvn}
@@ -26,14 +26,14 @@ services:
   php:
     user: '${USER_ID:-1000}:${GROUP_ID:-1000}'
     restart: unless-stopped
-    image: kvitrvn/php:1.0.0
+    image: kvitrvn/php:8.1.0
     volumes:
       - .:/var/www:delegated
     depends_on:
       - db
     environment:
       APP_ENV: dev
-      DATABASE_URL: postgresql://${POSTGRES_PASSWORD:-kvitrvn}:${POSTGRES_PASSWORD:-kvitrvn}@db:5432/${POSTGRES_DB:-kvitrvn}?serverVersion=13&chartset=utf8
+      DATABASE_URL: postgresql://${POSTGRES_PASSWORD:-kvitrvn}:${POSTGRES_PASSWORD:-kvitrvn}@db:5432/${POSTGRES_DB:-kvitrvn}?serverVersion=15&chartset=utf8
 
   # DEV TOOLS
   adminer:
