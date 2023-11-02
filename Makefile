@@ -8,11 +8,13 @@ php :=
 
 ifeq ($(isDocker), 1)
 	dc := USER_ID=$(user) GROUP_ID=$(group) docker-compose
+	dcdev := USER_ID=$(user) GROUP_ID=$(group) docker-compose -f docker-compose.dev.yml -f docker-compose.yml
 	de := docker-compose exec
 	dr := $(dc) run --rm
+	drdev := $(dcdev) run --rm
 	drtest := $(dc) -f docker-compose.test.yml run --rm
 	sy := $(de) php bin/console
-	node := $(dr) node
+	node := $(drdev) node
 	php := $(dr) --no-deps php
 endif
 
