@@ -38,7 +38,7 @@ format: ## Formate le code
 
 .PHONY: security-check
 security-check: vendor/autoload.php ## Check pour les vulnérabilités des dependencies
-	$(de) php local-php-security-checker --path=/var/www
+	$(php) local-php-security-checker --path=/var/www
 
 .PHONY: test
 test: vendor/autoload.php node_modules/time ## Execute les tests
